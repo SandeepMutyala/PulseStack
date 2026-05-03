@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  # PostgreSQL: Stores Users and Service Meta-data
+  postgres:
+    image: postgres:15-alpine
+    container_name: pulse-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  # MongoDB: Stores Historical Heartbeat Logs
+  mongodb:
+    image: mongo:latest
+    container_name: pulse-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - ./mongodata:/data/db
+
+  # Redis: Stores Real-time Status
+  redis:
+    image: redis:alpine
+    container_name: pulse-redis
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  # Adminer: Web-based GUI for PostgreSQL
+  adminer:
+    image: adminer
+    container_name: pulse-adminer
+    restart: always
+    ports:
+      - "${ADMINER_PORT}:8080"
