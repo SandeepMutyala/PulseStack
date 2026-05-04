@@ -1,4 +1,12 @@
+# Environment Variables
 .env
-.prettierrc
+
+# Database
 pgdata/
 mongodata/
+
+# Editor / System
+.prettierrc
+
+# Dependencies
+node_modules/
