@@ -53,6 +53,7 @@ jobs:
       - name: Install & Typecheck
         run: |
           npm ci                # Clean install of exact dependencies
+          npx prisma generate   # Create the TS types based on your DB schema
           npx tsc --noEmit      # Run the type check (if false don't create JS files)
 
   # JOB 3: THE FRONTEND WORKER
