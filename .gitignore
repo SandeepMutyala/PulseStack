@@ -1,0 +1,13 @@
+# Environment Variables
+.env
+
+# Database
+pgdata/
+mongodata/
+
+# Editor / System
+.prettierrc
+.DS_Store
+
+# Dependencies
+node_modules/

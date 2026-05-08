@@ -1,0 +1,24 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    /* Essential Layout */
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    /* Type Safety */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Output & Debugging */
+    "sourceMap": true,
+    "declaration": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*", "prisma.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}
