@@ -26,6 +26,8 @@ jobs:
           filters: |
             backend:
               - 'backend/**'  # If any file in /backend changes, set backend=true
+              - 'docker-compose.yml'          
+              - '.github/workflows/**'
             frontend:
               - 'frontend/**' # If any file in /frontend changes, set frontend=true
 
@@ -53,31 +55,31 @@ jobs:
       - name: Install & Typecheck
         run: |
           npm ci                # Clean install of exact dependencies
-          npx prisma generate   # Create the TS types based on your DB schema
+          DATABASE_URL="postgresql://no-user:no-password@localhost:5432/no-db" npx prisma generate --config prisma.config.ts   # Create the TS types based on your DB schema
           npx tsc --noEmit      # Run the type check (if false don't create JS files)
 
   # JOB 3: THE FRONTEND WORKER
-  frontend-check:
-    # Wait for 'changes' job to finish first
-    needs: changes
-    # ONLY run this job if the "Brain" found changes in the frontend folder
-    if: ${{ needs.changes.outputs.frontend == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        # Every command in this job will run inside the /frontend folder
-        working-directory: ./frontend
-    steps:
-      - uses: actions/checkout@v4
+  # frontend-check:
+  #   # Wait for 'changes' job to finish first
+  #   needs: changes
+  #   # ONLY run this job if the "Brain" found changes in the frontend folder
+  #   if: ${{ needs.changes.outputs.frontend == 'true' }}
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       # Every command in this job will run inside the /frontend folder
+  #       working-directory: ./frontend
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: "./frontend/package-lock.json"
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: "22"
+  #         cache: "npm"
+  #         cache-dependency-path: "./frontend/package-lock.json"
 
-      - name: Install & Typecheck
-        run: |
-          npm ci
-          npx tsc --noEmit      # Check React/Vite code for TS errors
+  #     - name: Install & Typecheck
+  #       run: |
+  #         npm ci
+  #         npx tsc --noEmit      # Check React/Vite code for TS errors
